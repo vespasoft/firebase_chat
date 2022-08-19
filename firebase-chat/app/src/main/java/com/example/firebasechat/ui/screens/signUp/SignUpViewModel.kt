@@ -1,4 +1,4 @@
-package com.example.firebasechat.ui.screens.login
+package com.example.firebasechat.ui.screens.signUp
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
@@ -8,6 +8,8 @@ import com.example.firebasechat.SIGN_UP_SCREEN
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
 import com.example.firebasechat.ui.common.ext.isValidEmail
+import com.example.firebasechat.ui.common.ext.isValidPassword
+import com.example.firebasechat.ui.common.ext.passwordMatches
 import com.example.firebasechat.ui.common.snackbar.SnackbarManager
 import com.example.firebasechat.ui.screens.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,11 +18,11 @@ import javax.inject.Inject
 import com.example.firebasechat.R.string as AppText
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val logRepository: LogRepository
 ) : BaseViewModel(logRepository) {
-    var uiState = mutableStateOf(LoginUiState())
+    var uiState = mutableStateOf(SignUpUiState())
         private set
 
     private val email get() = uiState.value.email
@@ -34,22 +36,31 @@ class LoginViewModel @Inject constructor(
         uiState.value = uiState.value.copy(password = newValue)
     }
 
-    fun onSignInClick(openAndPopUp: (String, String) -> Unit) {
+    fun onRepeatPasswordChange(newValue: String) {
+        uiState.value = uiState.value.copy(repeatPassword = newValue)
+    }
+
+    fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
         if (!email.isValidEmail()) {
             SnackbarManager.showMessage(AppText.email_error)
             return
         }
 
-        if (password.isBlank()) {
-            SnackbarManager.showMessage(AppText.empty_password_error)
+        if (!password.isValidPassword()) {
+            SnackbarManager.showMessage(AppText.password_error)
+            return
+        }
+
+        if (!password.passwordMatches(uiState.value.repeatPassword)) {
+            SnackbarManager.showMessage(AppText.password_match_error)
             return
         }
 
         viewModelScope.launch(showErrorExceptionHandler) {
-            accountRepository.authenticate(email, password) { error ->
+            accountRepository.createAccount(email, password) { error ->
                 if (error == null) {
                     linkWithEmail()
-                    openAndPopUp(CHAT_SCREEN, LOGIN_SCREEN)
+                    openAndPopUp(CHAT_SCREEN, SIGN_UP_SCREEN)
                 } else onError(error)
             }
         }
@@ -63,23 +74,9 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onForgotPasswordClick() {
-        if (!email.isValidEmail()) {
-            SnackbarManager.showMessage(AppText.email_error)
-            return
-        }
-
+    fun onLoginClick(openAndPopUp: (String, String) -> Unit) {
         viewModelScope.launch(showErrorExceptionHandler) {
-            accountRepository.sendRecoveryEmail(email) { error ->
-                if (error != null) onError(error)
-                else SnackbarManager.showMessage(AppText.recovery_email_sent)
-            }
-        }
-    }
-
-    fun onCreateAccountClick(openAndPopUp: (String, String) -> Unit) {
-        viewModelScope.launch(showErrorExceptionHandler) {
-            openAndPopUp(SIGN_UP_SCREEN, LOGIN_SCREEN)
+            openAndPopUp(LOGIN_SCREEN, SIGN_UP_SCREEN)
         }
     }
 }

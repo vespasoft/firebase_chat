@@ -7,6 +7,7 @@
     <string name="generic_error">Something wrong happened. Please try again.</string>
     <string name="email_error">Please insert a valid email.</string>
     <string name="cancel">Cancel</string>
+    <string name="go_to_login">I already have an account, go to login!</string>
 
     <!-- LoginScreen -->
     <string name="sign_in">Sign in</string>
@@ -14,6 +15,7 @@
     <string name="forgot_password">Forgot password? Click to get recovery email</string>
     <string name="recovery_email_sent">Check your inbox for the recovery email.</string>
     <string name="empty_password_error">Password cannot be empty.</string>
+    <string name="create_account_link">Do not you have an account yet? Click to get one</string>
 
     <!-- SignUpScreen -->
     <string name="create_account">Create account</string>
