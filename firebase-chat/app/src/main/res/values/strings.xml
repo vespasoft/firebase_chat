@@ -24,4 +24,7 @@
 
     <!-- ChatScreen -->
     <string name="chat">Friendly Chat</string>
+
+    <!-- SettingScreen -->
+    <string name="sign_out">Sign out</string>
 </resources>

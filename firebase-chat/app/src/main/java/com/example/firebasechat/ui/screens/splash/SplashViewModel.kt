@@ -1,7 +1,7 @@
 package com.example.firebasechat.ui.screens.splash
 
-import com.example.firebasechat.CHAT_SCREEN
 import com.example.firebasechat.LOGIN_SCREEN
+import com.example.firebasechat.MAIN_SCREEN
 import com.example.firebasechat.SPLASH_SCREEN
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
@@ -15,7 +15,7 @@ class SplashViewModel @Inject constructor(
     private val logRepository: LogRepository
 ) : BaseViewModel(logRepository) {
     fun onAppStart(openAndPopUp: (String, String) -> Unit) {
-        if (accountRepository.hasUser()) openAndPopUp(CHAT_SCREEN, SPLASH_SCREEN)
+        if (accountRepository.hasUser()) openAndPopUp(MAIN_SCREEN, SPLASH_SCREEN)
         else {
             openAndPopUp(LOGIN_SCREEN, SPLASH_SCREEN)
         }

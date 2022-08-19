@@ -16,6 +16,7 @@ limitations under the License.
 
 package com.example.firebasechat.model.repository.impl
 
+import com.example.firebasechat.model.LoggedUser
 import com.example.firebasechat.model.repository.AccountRepository
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -33,6 +34,13 @@ class AccountRepositoryImpl @Inject constructor() : AccountRepository {
 
     override fun getUserId(): String {
         return Firebase.auth.currentUser?.uid.orEmpty()
+    }
+
+    override fun getLoggedUser(): LoggedUser {
+        return LoggedUser(
+            uid = Firebase.auth.currentUser?.uid.orEmpty(),
+            email = Firebase.auth.currentUser?.email.orEmpty()
+        )
     }
 
     override fun authenticate(email: String, password: String, onResult: (Throwable?) -> Unit) {

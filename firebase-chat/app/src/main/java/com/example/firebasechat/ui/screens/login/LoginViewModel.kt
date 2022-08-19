@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.firebasechat.CHAT_SCREEN
 import com.example.firebasechat.LOGIN_SCREEN
+import com.example.firebasechat.MAIN_SCREEN
 import com.example.firebasechat.SIGN_UP_SCREEN
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
@@ -49,7 +50,7 @@ class LoginViewModel @Inject constructor(
             accountRepository.authenticate(email, password) { error ->
                 if (error == null) {
                     linkWithEmail()
-                    openAndPopUp(CHAT_SCREEN, LOGIN_SCREEN)
+                    openAndPopUp(MAIN_SCREEN, LOGIN_SCREEN)
                 } else onError(error)
             }
         }

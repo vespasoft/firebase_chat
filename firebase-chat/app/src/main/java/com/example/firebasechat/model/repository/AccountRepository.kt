@@ -16,10 +16,13 @@ limitations under the License.
 
 package com.example.firebasechat.model.repository
 
+import com.example.firebasechat.model.LoggedUser
+
 interface AccountRepository {
     fun hasUser(): Boolean
     fun isAnonymousUser(): Boolean
     fun getUserId(): String
+    fun getLoggedUser(): LoggedUser
     fun authenticate(email: String, password: String, onResult: (Throwable?) -> Unit)
     fun createAccount(email: String, password: String, onResult: (Throwable?) -> Unit)
     fun sendRecoveryEmail(email: String, onResult: (Throwable?) -> Unit)
