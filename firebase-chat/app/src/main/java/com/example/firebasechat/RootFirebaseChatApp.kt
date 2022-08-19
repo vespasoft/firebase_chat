@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.firebasechat.ui.common.snackbar.SnackbarManager
 import com.example.firebasechat.ui.screens.chat.ChatScreen
+import com.example.firebasechat.ui.screens.login.LoginScreen
 import com.example.firebasechat.ui.screens.splash.SplashScreen
 import com.example.firebasechat.ui.theme.FirebaseChatTheme
 import kotlinx.coroutines.CoroutineScope
@@ -78,7 +79,9 @@ fun NavGraphBuilder.firebaseChatGraph(appState: FirebaseChatAppState) {
 
     composable(SETTINGS_SCREEN) { }
 
-    composable(LOGIN_SCREEN) { }
+    composable(LOGIN_SCREEN) {
+        LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    }
 
     composable(SIGN_UP_SCREEN) { }
 
