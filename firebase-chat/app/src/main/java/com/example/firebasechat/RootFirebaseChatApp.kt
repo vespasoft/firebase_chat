@@ -20,6 +20,7 @@ import com.example.firebasechat.ui.common.snackbar.SnackbarManager
 import com.example.firebasechat.ui.screens.chat.ChatScreen
 import com.example.firebasechat.ui.screens.login.LoginScreen
 import com.example.firebasechat.ui.screens.main.MainScreen
+import com.example.firebasechat.ui.screens.settings.SettingsScreen
 import com.example.firebasechat.ui.screens.signUp.SignUpScreen
 import com.example.firebasechat.ui.screens.splash.SplashScreen
 import com.example.firebasechat.ui.theme.FirebaseChatTheme
@@ -79,7 +80,12 @@ fun NavGraphBuilder.firebaseChatGraph(appState: FirebaseChatAppState) {
         SplashScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
-    composable(SETTINGS_SCREEN) { }
+    composable(SETTINGS_SCREEN) {
+        SettingsScreen(
+            restartApp = { route -> appState.clearAndNavigate(route) },
+            openScreen = { route -> appState.navigate(route) }
+        )
+    }
 
     composable(LOGIN_SCREEN) {
         LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })

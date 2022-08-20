@@ -69,7 +69,9 @@ private fun CardEditor(
     Card(backgroundColor = MaterialTheme.colors.onPrimary, modifier = modifier, onClick = onEditClick) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(stringResource(title), color = highlightColor)

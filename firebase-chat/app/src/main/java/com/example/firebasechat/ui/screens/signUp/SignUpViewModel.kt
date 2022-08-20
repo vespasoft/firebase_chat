@@ -61,6 +61,7 @@ class SignUpViewModel @Inject constructor(
             accountRepository.createAccount(email, password) { error ->
                 if (error == null) {
                     linkWithEmail()
+                    //TODO: Implement a method to save the user data in a firebase database
                     openAndPopUp(MAIN_SCREEN, SIGN_UP_SCREEN)
                 } else onError(error)
             }
