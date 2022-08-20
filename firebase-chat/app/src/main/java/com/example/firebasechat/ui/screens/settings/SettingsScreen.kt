@@ -19,7 +19,6 @@ import com.example.firebasechat.ui.common.ext.spacer
 @Composable
 fun SettingsScreen(
     restartApp: (String) -> Unit,
-    openScreen: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {

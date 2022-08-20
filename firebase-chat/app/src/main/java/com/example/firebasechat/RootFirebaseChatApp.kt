@@ -82,8 +82,7 @@ fun NavGraphBuilder.firebaseChatGraph(appState: FirebaseChatAppState) {
 
     composable(SETTINGS_SCREEN) {
         SettingsScreen(
-            restartApp = { route -> appState.clearAndNavigate(route) },
-            openScreen = { route -> appState.navigate(route) }
+            restartApp = { route -> appState.clearAndNavigate(route) }
         )
     }
 
