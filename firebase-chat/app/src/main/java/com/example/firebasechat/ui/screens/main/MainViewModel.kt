@@ -16,13 +16,15 @@ limitations under the License.
 
 package com.example.firebasechat.ui.screens.main
 
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.firebasechat.SETTINGS_SCREEN
-import com.example.firebasechat.SPLASH_SCREEN
 import com.example.firebasechat.model.LoggedUser
+import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
+import com.example.firebasechat.model.repository.UserStorageRepository
 import com.example.firebasechat.ui.screens.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -31,27 +33,29 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     logRepository: LogRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
+    private val userStorageRepository: UserStorageRepository
 ) : BaseViewModel(logRepository) {
+    var users = mutableStateMapOf<String, User>()
+        private set
 
-    var currentUser = mutableStateOf(LoggedUser())
-
-    init {
-        addLoggedUserListener()
+    fun addUsersListener() {
+        viewModelScope.launch(showErrorExceptionHandler) {
+            userStorageRepository.addListener(accountRepository.getUserId(), ::onUserEvent, ::onError)
+        }
     }
 
-    private fun addLoggedUserListener() {
-        viewModelScope.launch {
-            currentUser.value = accountRepository.getLoggedUser()
-        }
+    fun removeUsersListener() {
+        viewModelScope.launch(showErrorExceptionHandler) { userStorageRepository.removeListener() }
     }
 
     fun onSettingsClick(openScreen: (String) -> Unit) = openScreen(SETTINGS_SCREEN)
 
-    fun onSignOutClick(restartApp: (String) -> Unit) {
-        viewModelScope.launch(showErrorExceptionHandler) {
-            accountRepository.signOut()
-            restartApp(SPLASH_SCREEN)
-        }
+    fun onUserActionClick(openScreen: (String) -> Unit, user: User) {
+        // TODO: Navigate to Chat Screen
+    }
+
+    private fun onUserEvent(wasDocumentDeleted: Boolean, user: User) {
+        if (wasDocumentDeleted) users.remove(user.id) else users[user.id] = user
     }
 }
