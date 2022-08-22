@@ -3,18 +3,18 @@ package com.example.firebasechat.ui.screens.login
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.firebasechat.R
 import com.example.firebasechat.ui.common.composable.*
-import com.example.firebasechat.ui.common.ext.basicButton
-import com.example.firebasechat.ui.common.ext.fieldModifier
-import com.example.firebasechat.ui.common.ext.smallSpacer
-import com.example.firebasechat.ui.common.ext.textButton
+import com.example.firebasechat.ui.common.ext.*
 import com.example.firebasechat.R.string as AppText
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(
     openAndPopUp: (String, String) -> Unit,
@@ -40,13 +40,12 @@ fun LoginScreen(
             viewModel.onSignInClick(openAndPopUp)
         }
 
-        BasicTextButton(AppText.forgot_password, Modifier.textButton()) {
-            viewModel.onForgotPasswordClick()
-        }
-
         Spacer(modifier = Modifier.smallSpacer())
 
-        BasicTextButton(AppText.create_account_link, Modifier.textButton()) {
+        LinkCardEditor(AppText.forgot_password, content = "",  Modifier.card()) {
+            viewModel.onForgotPasswordClick()
+        }
+        LinkCardEditor(AppText.create_account_link, "", Modifier.card()) {
             viewModel.onCreateAccountClick(openAndPopUp)
         }
     }

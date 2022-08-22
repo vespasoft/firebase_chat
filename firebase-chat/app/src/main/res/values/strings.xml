@@ -33,6 +33,30 @@
     <string name="sign_out">Sign out</string>
     <string name="delete_my_account">Delete my account</string>
 
+    <!-- CHAT -->
+    <string name="jumpBottom">Jump to bottom</string>
+    <string name="send">Send</string>
+    <string name="author_me">me</string>
+    <string name="now">8:30 PM</string>
+    <string name="emoji_selector_desc">Emoji selector</string>
+    <string name="emoji_selector_bt_desc">Show Emoji selector</string>
+    <string name="sticker_selector_desc">Sticker selector</string>
+    <string name="sticker_selector_bt_desc">Show Sticker selector</string>
+    <string name="dm_desc">Direct Message</string>
+    <string name="attach_photo_desc">Attach Photo</string>
+    <string name="map_selector_desc">Location selector</string>
+    <string name="videochat_desc">Start videochat</string>
+    <string name="textfield_desc">Text input</string>
+    <string name="not_available">Functionality currently not available</string>
+    <string name="not_available_subtitle">Grab a beverage and check back later!</string>
+    <string name="attached_image">Attached image</string>
+    <string name="search">Search</string>
+    <string name="info">Information</string>
+    <string name="more_options">More options</string>
+    <string name="textfield_hint">Text a message here</string>
+    <string name="emojis_label">Emojis</string>
+    <string name="stickers_label">Stickers</string>
+
     <!-- Dialogs -->
     <string name="sign_out_title">Sign out?</string>
     <string name="sign_out_description">You will have to sign in again to see your tasks.</string>

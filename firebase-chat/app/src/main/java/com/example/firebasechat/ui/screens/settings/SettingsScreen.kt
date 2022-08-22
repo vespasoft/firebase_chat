@@ -52,7 +52,7 @@ private fun UserNameCard(uiState: SettingsUiState) {
     RegularCardEditor(
         title = AppText.username,
         icon = AppIcon.ic_baseline_account_box_24,
-        content = loggedUser?.email.toString() ,
+        content = loggedUser?.email.toString(),
         modifier = Modifier.card()) {
 
     }

@@ -17,10 +17,11 @@ limitations under the License.
 package com.example.firebasechat.ui.screens.main
 
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.example.firebasechat.CHAT_SCREEN
+import com.example.firebasechat.MAIN_SCREEN
 import com.example.firebasechat.SETTINGS_SCREEN
-import com.example.firebasechat.model.LoggedUser
+import com.example.firebasechat.SIGN_UP_SCREEN
 import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
@@ -52,7 +53,8 @@ class MainViewModel @Inject constructor(
     fun onSettingsClick(openScreen: (String) -> Unit) = openScreen(SETTINGS_SCREEN)
 
     fun onUserActionClick(openScreen: (String) -> Unit, user: User) {
-        // TODO: Navigate to Chat Screen
+        // TODO: Pass user Id as a Parameter
+        openScreen(CHAT_SCREEN)
     }
 
     private fun onUserEvent(wasDocumentDeleted: Boolean, user: User) {

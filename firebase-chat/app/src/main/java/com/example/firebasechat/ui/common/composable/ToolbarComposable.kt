@@ -16,46 +16,57 @@ limitations under the License.
 
 package com.example.firebasechat.ui.common.composable
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 
 @Composable
 fun BasicToolbar(@StringRes title: Int) {
-    TopAppBar(
-        title = { Text(stringResource(title)) },
-        backgroundColor = toolbarColor()
+    ToolBarComponent(
+        scrollBehavior = null,
+        title = {
+            Text(
+                text = stringResource(title),
+                style = androidx.compose.material3.MaterialTheme.typography.titleMedium
+            )},
+        actions = { }
     )
 }
 
 @Composable
-fun ActionToolbar(
-    @StringRes title: Int,
-    @DrawableRes endActionIcon: Int,
-    modifier: Modifier,
-    endAction: () -> Unit
+fun ToolBarComponent(
+    modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    title: @Composable () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
-    TopAppBar(
-        title = { Text(stringResource(title)) },
-        backgroundColor = toolbarColor(),
-        actions = {
-            Box(modifier) {
-                IconButton(onClick = endAction) {
-                    Icon(painter = painterResource(endActionIcon), contentDescription = "Action")
-                }
-            }
-        }
+    val backgroundColors = TopAppBarDefaults.centerAlignedTopAppBarColors()
+    val backgroundColor = backgroundColors.containerColor(
+        scrollFraction = scrollBehavior?.scrollFraction ?: 0f
+    ).value
+    val foregroundColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        containerColor = Color.Transparent,
+        scrolledContainerColor = Color.Transparent
     )
-}
-
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
-    return if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
+    Box(modifier = Modifier.background(backgroundColor)) {
+        CenterAlignedTopAppBar(
+            modifier = modifier,
+            actions = actions,
+            title = title,
+            scrollBehavior = scrollBehavior,
+            colors = foregroundColors,
+            navigationIcon = { }
+        )
+    }
 }

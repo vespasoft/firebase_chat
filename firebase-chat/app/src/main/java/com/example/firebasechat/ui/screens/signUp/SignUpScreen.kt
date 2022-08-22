@@ -3,18 +3,17 @@ package com.example.firebasechat.ui.screens.signUp
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.firebasechat.ui.common.composable.*
-import com.example.firebasechat.ui.common.ext.basicButton
-import com.example.firebasechat.ui.common.ext.fieldModifier
-import com.example.firebasechat.ui.common.ext.smallSpacer
-import com.example.firebasechat.ui.common.ext.textButton
+import com.example.firebasechat.ui.common.ext.*
 import com.example.firebasechat.R.string as AppText
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SignUpScreen(
     openAndPopUp: (String, String) -> Unit,
@@ -45,7 +44,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.smallSpacer())
 
-        BasicTextButton(AppText.go_to_login, Modifier.textButton()) {
+        LinkCardEditor(AppText.go_to_login, content = "",  Modifier.textButton()) {
             viewModel.onLoginClick(openAndPopUp)
         }
     }
