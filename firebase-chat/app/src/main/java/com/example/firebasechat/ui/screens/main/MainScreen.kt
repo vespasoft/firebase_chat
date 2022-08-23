@@ -19,6 +19,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.firebasechat.model.User
 import com.example.firebasechat.ui.common.composable.ToolBarComponent
 import com.example.firebasechat.ui.common.ext.smallSpacer
 import com.example.firebasechat.R.string as AppText

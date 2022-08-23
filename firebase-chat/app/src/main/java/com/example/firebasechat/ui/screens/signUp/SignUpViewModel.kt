@@ -8,7 +8,7 @@ import com.example.firebasechat.SIGN_UP_SCREEN
 import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
-import com.example.firebasechat.model.repository.UserStorageRepository
+import com.example.firebasechat.model.repository.UserRepository
 import com.example.firebasechat.ui.common.ext.isValidEmail
 import com.example.firebasechat.ui.common.ext.isValidPassword
 import com.example.firebasechat.ui.common.ext.passwordMatches
@@ -23,7 +23,7 @@ import com.example.firebasechat.R.string as AppText
 class SignUpViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val logRepository: LogRepository,
-    private val userStorageRepository: UserStorageRepository
+    private val userRepository: UserRepository
 ) : BaseViewModel(logRepository) {
     var uiState = mutableStateOf(SignUpUiState())
         private set
@@ -101,7 +101,7 @@ class SignUpViewModel @Inject constructor(
                 name = fullName
             )
 
-            userStorageRepository.saveUser(user) { error ->
+            userRepository.saveUser(user) { error ->
                 if (error != null) logRepository.logNonFatalCrash(error)
                 else openAndPopUp(MAIN_SCREEN, SIGN_UP_SCREEN)
             }

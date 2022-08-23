@@ -19,13 +19,12 @@ package com.example.firebasechat.ui.screens.main
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.viewModelScope
 import com.example.firebasechat.CHAT_SCREEN
-import com.example.firebasechat.MAIN_SCREEN
 import com.example.firebasechat.SETTINGS_SCREEN
-import com.example.firebasechat.SIGN_UP_SCREEN
+import com.example.firebasechat.USER_ID
 import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
-import com.example.firebasechat.model.repository.UserStorageRepository
+import com.example.firebasechat.model.repository.UserRepository
 import com.example.firebasechat.ui.screens.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -35,26 +34,25 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     logRepository: LogRepository,
     private val accountRepository: AccountRepository,
-    private val userStorageRepository: UserStorageRepository
+    private val userRepository: UserRepository
 ) : BaseViewModel(logRepository) {
     var users = mutableStateMapOf<String, User>()
         private set
 
     fun addUsersListener() {
         viewModelScope.launch(showErrorExceptionHandler) {
-            userStorageRepository.addListener(accountRepository.getUserId(), ::onUserEvent, ::onError)
+            userRepository.addListener(accountRepository.getUserId(), ::onUserEvent, ::onError)
         }
     }
 
     fun removeUsersListener() {
-        viewModelScope.launch(showErrorExceptionHandler) { userStorageRepository.removeListener() }
+        viewModelScope.launch(showErrorExceptionHandler) { userRepository.removeListener() }
     }
 
     fun onSettingsClick(openScreen: (String) -> Unit) = openScreen(SETTINGS_SCREEN)
 
     fun onUserActionClick(openScreen: (String) -> Unit, user: User) {
-        // TODO: Pass user Id as a Parameter
-        openScreen(CHAT_SCREEN)
+        openScreen("$CHAT_SCREEN?$USER_ID={${user.id}}")
     }
 
     private fun onUserEvent(wasDocumentDeleted: Boolean, user: User) {

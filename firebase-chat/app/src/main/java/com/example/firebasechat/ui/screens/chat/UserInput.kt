@@ -477,7 +477,7 @@ fun StickerTable(
     modifier: Modifier = Modifier
 ) {
     Column(modifier.fillMaxWidth()) {
-        repeat(4) { x ->
+        repeat(2) { x ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.firebasechat.SPLASH_SCREEN
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
-import com.example.firebasechat.model.repository.UserStorageRepository
+import com.example.firebasechat.model.repository.UserRepository
 import com.example.firebasechat.ui.screens.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     logRepository: LogRepository,
     private val accountRepository: AccountRepository,
-    private val userStorageRepository: UserStorageRepository
+    private val userRepository: UserRepository
 ) : BaseViewModel(logRepository) {
     var uiState = mutableStateOf(SettingsUiState())
         private set
@@ -33,7 +33,7 @@ class SettingsViewModel @Inject constructor(
 
     fun onDeleteMyAccountClick(restartApp: (String) -> Unit) {
         viewModelScope.launch(showErrorExceptionHandler) {
-            userStorageRepository.deleteUser(accountRepository.getUserId()) { error ->
+            userRepository.deleteUser(accountRepository.getUserId()) { error ->
                 if (error == null) deleteAccount(restartApp) else onError(error)
             }
         }

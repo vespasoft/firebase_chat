@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.firebasechat.ui.common.snackbar.SnackbarManager
 import com.example.firebasechat.ui.screens.chat.ChatScreen
 import com.example.firebasechat.ui.screens.login.LoginScreen
@@ -98,7 +99,13 @@ fun NavGraphBuilder.firebaseChatGraph(appState: FirebaseChatAppState) {
         MainScreen(openScreen = { route -> appState.navigate(route) })
     }
 
-    composable(CHAT_SCREEN) {
-        ChatScreen(openScreen = { route -> appState.navigate(route) })
+    composable(
+        route = "$CHAT_SCREEN$USER_ID_ARG",
+        arguments = listOf(navArgument(USER_ID) { defaultValue = USER_DEFAULT_ID })
+    )  {
+        ChatScreen(
+            openScreen = { route -> appState.navigate(route) },
+            userId = it.arguments?.getString(USER_ID) ?: USER_DEFAULT_ID
+        )
     }
 }

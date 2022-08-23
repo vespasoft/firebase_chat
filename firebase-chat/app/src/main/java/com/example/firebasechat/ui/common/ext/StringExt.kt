@@ -17,6 +17,8 @@ limitations under the License.
 package com.example.firebasechat.ui.common.ext
 
 import android.util.Patterns
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 private const val MIN_PASS_LENGTH = 6
@@ -34,4 +36,13 @@ fun String.isValidPassword(): Boolean {
 
 fun String.passwordMatches(repeated: String): Boolean {
     return this == repeated
+}
+
+fun String.idFromParameter(): String {
+    return this.substring(1, this.length-1)
+}
+
+fun Long.toTimeFormat(): String {
+    val simpleDate = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+    return simpleDate.format(Date(this))
 }

@@ -30,7 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.firebasechat.R
+import com.example.firebasechat.model.Message
+import com.example.firebasechat.model.User
 import com.example.firebasechat.ui.common.composable.ToolBarComponent
+import com.example.firebasechat.ui.common.ext.toTimeFormat
 import com.example.firebasechat.ui.common.snackbar.FunctionalityNotAvailablePopup
 import com.example.firebasechat.ui.theme.FirebaseChatTheme
 import kotlinx.coroutines.launch
@@ -39,18 +42,16 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChatScreen(
     openScreen: (String) -> Unit,
+    userId: String,
     modifier: Modifier = Modifier,
     viewModel: ChatViewModel = hiltViewModel()
 ) {
-
-    val authorMe = stringResource(R.string.author_me)
-    val timeNow = stringResource(id = R.string.now)
-
     val scrollState = rememberLazyListState()
     val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
     val scope = rememberCoroutineScope()
 
     val uiState = viewModel.uiState
+    val messages = viewModel.messages
 
     Surface(modifier = modifier) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -60,19 +61,21 @@ fun ChatScreen(
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 Messages(
-                    messages = uiState.value.messages,
+                    loggedUser = viewModel.loggedUser.value,
+                    messages = messages.values.sortedByDescending { it.timestamp }.toList(),
                     modifier = Modifier.weight(1f),
                     scrollState = scrollState
                 )
+
                 UserInput(
                     onMessageSent = { content ->
-                        uiState.value.addMessage(
-                            Message(authorMe, content, timeNow)
+                        viewModel.sendMessage(
+                            Message(content = content)
                         )
                     },
                     onStickerSent = { stickerId ->
-                        uiState.value.addMessage(
-                            Message(author= authorMe, timestamp = timeNow, image = stickerId)
+                        viewModel.sendMessage(
+                            Message(image = stickerId.toString())
                         )
                     },
                     resetScroll = {
@@ -93,6 +96,12 @@ fun ChatScreen(
                 scrollBehavior = null
             )
         }
+    }
+
+    DisposableEffect(viewModel) {
+        viewModel.addLoggedUserListener()
+        viewModel.initialize(userId)
+        onDispose { viewModel.removeChatListener() }
     }
 }
 
@@ -143,6 +152,7 @@ const val ConversationTestTag = "ConversationTestTag"
 
 @Composable
 fun Messages(
+    loggedUser: User,
     messages: List<Message>,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
@@ -150,13 +160,9 @@ fun Messages(
     val scope = rememberCoroutineScope()
     Box(modifier = modifier) {
 
-        val authorMe = stringResource(id = R.string.author_me)
         LazyColumn(
             reverseLayout = true,
             state = scrollState,
-            // Add content padding so that the content can be scrolled (y-axis)
-            // below the status bar + app bar
-            // TODO: Get height from somewhere
             contentPadding =
             WindowInsets.statusBars.add(WindowInsets(top = 90.dp)).asPaddingValues(),
             modifier = Modifier
@@ -170,21 +176,10 @@ fun Messages(
                 val isFirstMessageByAuthor = prevAuthor != content.author
                 val isLastMessageByAuthor = nextAuthor != content.author
 
-                // Hardcode day dividers for simplicity
-                if (index == messages.size - 1) {
-                    item {
-                        DayHeader("20 Aug")
-                    }
-                } else if (index == 2) {
-                    item {
-                        DayHeader("Today")
-                    }
-                }
-
                 item {
-                    Message(
+                    MessageItem(
                         msg = content,
-                        isUserMe = content.author == authorMe,
+                        isUserMe = content.senderId == loggedUser.userId,
                         isFirstMessageByAuthor = isFirstMessageByAuthor,
                         isLastMessageByAuthor = isLastMessageByAuthor
                     )
@@ -220,7 +215,7 @@ fun Messages(
 }
 
 @Composable
-fun Message(
+fun MessageItem(
     msg: Message,
     isUserMe: Boolean,
     isFirstMessageByAuthor: Boolean,
@@ -244,7 +239,7 @@ fun Message(
                     .border(3.dp, MaterialTheme.colorScheme.surface, CircleShape)
                     .clip(CircleShape)
                     .align(Alignment.Top),
-                painter = painterResource(id = msg.authorImage),
+                painter = painterResource(id = R.drawable.ic_baseline_person_24),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
             )
@@ -300,7 +295,7 @@ private fun AuthorNameTimestamp(msg: Message) {
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = msg.timestamp,
+            text = msg.timestamp.toLong().toTimeFormat(),
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.alignBy(LastBaseline),
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -361,20 +356,23 @@ fun ChatItemBubble(
             )
         }
 
-        message.image?.let {
+        if (!message.image.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(4.dp))
             Surface(
                 color = backgroundBubbleColor,
                 shape = ChatBubbleShape
             ) {
-                Image(
-                    painter = painterResource(it),
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(160.dp),
-                    contentDescription = stringResource(id = R.string.attached_image)
-                )
+                message.image?.let {
+                    Image(
+                        painter = painterResource(it.toInt()),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(160.dp),
+                        contentDescription = stringResource(id = R.string.attached_image)
+                    )
+                }
             }
         }
+
     }
 }
 

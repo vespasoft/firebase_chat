@@ -16,27 +16,9 @@
 
 package com.example.firebasechat.ui.screens.chat
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.toMutableStateList
-import com.example.firebasechat.R
+import com.example.firebasechat.model.User
 
 class ChatUiState(
-    val chatTitle: String,
-    initialMessages: List<Message>
-) {
-    private val _messages: MutableList<Message> = initialMessages.toMutableStateList()
-    val messages: List<Message> = _messages
-
-    fun addMessage(msg: Message) {
-        _messages.add(0, msg) // Add to the beginning of the list
-    }
-}
-
-@Immutable
-data class Message(
-    val author: String,
-    val content: String? = null,
-    val timestamp: String,
-    val image: Int? = null,
-    val authorImage: Int = R.drawable.ic_baseline_person_24
+    val chatTitle: String = "",
+    val userSelected: User = User()
 )
