@@ -447,7 +447,7 @@ fun EmojiTable(
     modifier: Modifier = Modifier
 ) {
     Column(modifier.fillMaxWidth()) {
-        repeat(4) { x ->
+        repeat(EMOJI_ROWS) { x ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -477,7 +477,8 @@ fun StickerTable(
     modifier: Modifier = Modifier
 ) {
     Column(modifier.fillMaxWidth()) {
-        repeat(2) { x ->
+
+        repeat(STICKERS_ROWS) { x ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -499,6 +500,7 @@ fun StickerTable(
 }
 
 private const val EMOJI_COLUMNS = 10
+private const val EMOJI_ROWS = 7
 
 private val emojis = listOf(
     "\ud83d\ude00", // Grinning Face
@@ -628,16 +630,36 @@ private val emojis = listOf(
     "\ud83d\udc6b", // Man and Woman Holding Hands
     "\ud83d\udc6c", // Two Men Holding Hands
     "\ud83d\udc6d", // Two Women Holding Hands
-    "\ud83d\udc8f" // Kiss
+    "\ud83d\udc8f"  // Kiss
 )
 
-private const val STICKERS_COLUMNS = 3
+private const val STICKERS_COLUMNS = 4
+private const val STICKERS_ROWS = 5
 
 private val stickers = listOf(
-    R.drawable.thankyou,
-    R.drawable.happy_birthday,
-    R.drawable.approved,
-    R.drawable.tumblr_sticker,
-    R.drawable.fox_sticker,
-    R.drawable.sad_tumblr_sticker
+    R.drawable.stick01,
+    R.drawable.stick02,
+    R.drawable.stick03,
+    R.drawable.stick04,
+    R.drawable.stick05,
+    R.drawable.stick06,
+    R.drawable.stick07,
+    R.drawable.stick08,
+    R.drawable.stick09,
+    R.drawable.stick10,
+    R.drawable.stick11,
+    R.drawable.stick12,
+    R.drawable.stick13,
+    R.drawable.stick14,
+    R.drawable.stick15,
+    R.drawable.stick16,
+    R.drawable.stick17,
+    R.drawable.stick18,
+    R.drawable.stick19,
+    R.drawable.stick20,
+    R.drawable.stick21,
+    R.drawable.stick22,
+    R.drawable.stick23,
+    R.drawable.stick24,
+    R.drawable.stick25
 )
