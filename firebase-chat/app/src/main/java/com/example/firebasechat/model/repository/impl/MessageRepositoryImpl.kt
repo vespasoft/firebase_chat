@@ -45,7 +45,11 @@ class MessageRepositoryImpl @Inject constructor(): MessageRepository {
         Firebase.firestore
             .collection(MESSAGE_COLLECTION)
             .add(msg)
-            .addOnCompleteListener { onResult(it.exception) }
+            .addOnCompleteListener {
+
+
+                onResult(it.exception)
+            }
     }
 
     companion object {

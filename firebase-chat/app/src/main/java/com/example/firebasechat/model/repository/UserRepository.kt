@@ -18,4 +18,5 @@ interface UserRepository {
     fun updateUser(user: User, onResult: (Throwable?) -> Unit)
     fun deleteUser(userId: String, onResult: (Throwable?) -> Unit)
     fun getUser(userId: String, onError: (Throwable) -> Unit, onSuccess: (User) -> Unit)
+    fun registerFCMToken(user: User, onError: (Throwable) -> Unit, onSuccess: () -> Unit)
 }

@@ -47,7 +47,8 @@ fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel()
 ) {
     val scrollState = rememberLazyListState()
-    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
+    val topBarAppState = remember { TopAppBarState(0F, 0F, 0F) }
+    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior(topBarAppState) }
     val scope = rememberCoroutineScope()
 
     val uiState = viewModel.uiState
@@ -105,6 +106,7 @@ fun ChatScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatHeader(
     headerTitle: String,
@@ -396,6 +398,7 @@ fun ClickableMessage(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun channelBarPrev() {

@@ -1,13 +1,7 @@
 package com.example.firebasechat.di
 
-import com.example.firebasechat.model.repository.AccountRepository
-import com.example.firebasechat.model.repository.MessageRepository
-import com.example.firebasechat.model.repository.LogRepository
-import com.example.firebasechat.model.repository.UserRepository
-import com.example.firebasechat.model.repository.impl.AccountRepositoryImpl
-import com.example.firebasechat.model.repository.impl.MessageRepositoryImpl
-import com.example.firebasechat.model.repository.impl.LogRepositoryImpl
-import com.example.firebasechat.model.repository.impl.UserRepositoryImpl
+import com.example.firebasechat.model.repository.*
+import com.example.firebasechat.model.repository.impl.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -26,5 +20,8 @@ abstract class RepositoryModule {
     abstract fun provideUserStorageRepository(impl: UserRepositoryImpl): UserRepository
 
     @Binds
-    abstract fun provideChatRoomRepository(impl: MessageRepositoryImpl): MessageRepository
+    abstract fun provideMessageRepository(impl: MessageRepositoryImpl): MessageRepository
+
+    @Binds
+    abstract fun provideNotificationRepository(impl: NotificationRepositoryImpl): NotificationRepository
 }

@@ -5,11 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.firebasechat.USER_DEFAULT_ID
 import com.example.firebasechat.model.Message
+import com.example.firebasechat.model.NotificationRequest
 import com.example.firebasechat.model.User
-import com.example.firebasechat.model.repository.AccountRepository
-import com.example.firebasechat.model.repository.MessageRepository
-import com.example.firebasechat.model.repository.LogRepository
-import com.example.firebasechat.model.repository.UserRepository
+import com.example.firebasechat.model.repository.*
+import com.example.firebasechat.model.resources.remote.FcmRequest
 import com.example.firebasechat.ui.common.ext.idFromParameter
 import com.example.firebasechat.ui.screens.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +20,8 @@ class ChatViewModel @Inject constructor(
     logRepository: LogRepository,
     private val accountRepository: AccountRepository,
     private val userRepository: UserRepository,
-    private val messageRepository: MessageRepository
+    private val messageRepository: MessageRepository,
+    private val notificationRepository: NotificationRepository
 ): BaseViewModel(logRepository) {
     var uiState = mutableStateOf(ChatUiState())
         private set
@@ -66,7 +66,33 @@ class ChatViewModel @Inject constructor(
                 if (error != null) {
                     onError(error)
                 }
+
+                if (error == null) {
+                    sendPushNotification(
+                        title = loggedUser.value.name,
+                        body = msg.content.toString(),
+                        fcmToken = uiState.value.userSelected.fcmToken
+                    )
+                }
             }
+        }
+    }
+
+    private fun sendPushNotification(
+        title: String,
+        body: String,
+        fcmToken: String
+    ) {
+        viewModelScope.launch {
+            notificationRepository.sendNotification(
+                param = NotificationRequest(
+                    fcmData = FcmRequest(
+                        title = title,
+                        body = body
+                    ),
+                    token = fcmToken
+                )
+            )
         }
     }
 

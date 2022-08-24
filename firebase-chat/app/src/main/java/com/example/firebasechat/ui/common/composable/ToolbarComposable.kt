@@ -18,12 +18,11 @@ package com.example.firebasechat.ui.common.composable
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
@@ -31,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicToolbar(@StringRes title: Int) {
     ToolBarComponent(
@@ -44,6 +44,7 @@ fun BasicToolbar(@StringRes title: Int) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToolBarComponent(
     modifier: Modifier = Modifier,
@@ -52,9 +53,7 @@ fun ToolBarComponent(
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     val backgroundColors = TopAppBarDefaults.centerAlignedTopAppBarColors()
-    val backgroundColor = backgroundColors.containerColor(
-        scrollFraction = scrollBehavior?.scrollFraction ?: 0f
-    ).value
+    val backgroundColor = backgroundColors.containerColor(colorTransitionFraction = 0f).value
     val foregroundColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
         containerColor = Color.Transparent,
         scrolledContainerColor = Color.Transparent

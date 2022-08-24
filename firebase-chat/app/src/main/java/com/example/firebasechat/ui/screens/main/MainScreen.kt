@@ -32,8 +32,8 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val users = viewModel.users
-
-    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
+    val topBarAppState = remember { TopAppBarState(0F, 0F, 0F) }
+    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior(topBarAppState) }
 
     Surface(modifier = modifier) {
         Box(modifier = Modifier.fillMaxSize()) {

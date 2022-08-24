@@ -18,9 +18,7 @@ package com.example.firebasechat.ui.screens.main
 
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.viewModelScope
-import com.example.firebasechat.CHAT_SCREEN
-import com.example.firebasechat.SETTINGS_SCREEN
-import com.example.firebasechat.USER_ID
+import com.example.firebasechat.*
 import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
@@ -42,6 +40,7 @@ class MainViewModel @Inject constructor(
     fun addUsersListener() {
         viewModelScope.launch(showErrorExceptionHandler) {
             userRepository.addListener(accountRepository.getUserId(), ::onUserEvent, ::onError)
+            userRepository.addLoggedUserListener(accountRepository.getUserId(), ::onLoggedUserEvent, ::onError)
         }
     }
 
@@ -57,5 +56,13 @@ class MainViewModel @Inject constructor(
 
     private fun onUserEvent(wasDocumentDeleted: Boolean, user: User) {
         if (wasDocumentDeleted) users.remove(user.id) else users[user.id] = user
+    }
+
+    private fun onLoggedUserEvent(user: User) {
+        userRepository.registerFCMToken(
+            user = user,
+            onError = { throwable -> onError(throwable) },
+            onSuccess = { }
+        )
     }
 }
