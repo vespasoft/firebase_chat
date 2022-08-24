@@ -1,4 +1,4 @@
-package com.example.firebasechat.model.resources.remote
+package com.example.firebasechat.model.remote
 
 @kotlinx.serialization.Serializable
 data class FcmRequest(

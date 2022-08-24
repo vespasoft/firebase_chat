@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.firebasechat.USER_DEFAULT_ID
 import com.example.firebasechat.model.Message
-import com.example.firebasechat.model.NotificationRequest
+import com.example.firebasechat.model.PushNotification
 import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.*
-import com.example.firebasechat.model.resources.remote.FcmRequest
+import com.example.firebasechat.model.remote.FcmRequest
 import com.example.firebasechat.ui.common.ext.idFromParameter
 import com.example.firebasechat.ui.screens.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -85,7 +85,7 @@ class ChatViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             notificationRepository.sendNotification(
-                param = NotificationRequest(
+                param = PushNotification(
                     fcmData = FcmRequest(
                         title = title,
                         body = body

@@ -1,5 +1,7 @@
 package com.example.firebasechat.di
 
+import com.example.firebasechat.model.remote.SendNotificationClient
+import com.example.firebasechat.model.remote.clients.SendNotificationClientImpl
 import com.example.firebasechat.model.repository.*
 import com.example.firebasechat.model.repository.impl.*
 import dagger.Binds
@@ -21,6 +23,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun provideMessageRepository(impl: MessageRepositoryImpl): MessageRepository
+
+    @Binds
+    abstract fun provideSendNotificationClient(impl: SendNotificationClientImpl): SendNotificationClient
 
     @Binds
     abstract fun provideNotificationRepository(impl: NotificationRepositoryImpl): NotificationRepository

@@ -1,14 +1,15 @@
 package com.example.firebasechat.model.repository.impl
 
-import com.example.firebasechat.model.NotificationRequest
+import com.example.firebasechat.model.PushNotification
+import com.example.firebasechat.model.remote.SendNotificationClient
 import com.example.firebasechat.model.repository.NotificationRepository
-import com.example.firebasechat.model.resources.remote.clients.SendNotificationHttpClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
 
-class NotificationRepositoryImpl @Inject constructor() : NotificationRepository {
-    private val sendNotificationHttpClient = SendNotificationHttpClient()
+class NotificationRepositoryImpl @Inject constructor(
+    private val sendNotificationHttpClient: SendNotificationClient
+) : NotificationRepository {
 
     override fun fetchingFCMRegistrationToken(onRegistrationToken: (String) -> Unit) {
         FirebaseMessaging.getInstance().token
@@ -24,7 +25,7 @@ class NotificationRepositoryImpl @Inject constructor() : NotificationRepository 
             )
     }
 
-    override suspend fun sendNotification(param: NotificationRequest): Int {
+    override suspend fun sendNotification(param: PushNotification): Int {
         val response = sendNotificationHttpClient.invoke(param = param)
         return response.status.value
     }
