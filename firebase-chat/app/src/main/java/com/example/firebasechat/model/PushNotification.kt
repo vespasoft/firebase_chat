@@ -1,6 +1,6 @@
 package com.example.firebasechat.model
 
-import com.example.firebasechat.model.remote.FcmRequest
+import com.example.firebasechat.model.resources.remote.FcmRequest
 
 @kotlinx.serialization.Serializable
 class PushNotification(

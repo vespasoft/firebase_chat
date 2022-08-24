@@ -1,9 +1,9 @@
-package com.example.firebasechat.model.remote.clients
+package com.example.firebasechat.model.resources.remote.impl
 
 import com.example.firebasechat.model.PushNotification
-import com.example.firebasechat.model.remote.FcmBody
-import com.example.firebasechat.model.remote.Header
-import com.example.firebasechat.model.remote.SendNotificationClient
+import com.example.firebasechat.model.resources.remote.FcmBody
+import com.example.firebasechat.model.resources.remote.Header
+import com.example.firebasechat.model.resources.remote.SendNotificationRemote
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class SendNotificationClientImpl @Inject constructor(): SendNotificationClient {
+class SendNotificationRemoteImpl @Inject constructor(): SendNotificationRemote {
     override val client: HttpClient
         get() = HttpClient {
             install(ContentNegotiation) {

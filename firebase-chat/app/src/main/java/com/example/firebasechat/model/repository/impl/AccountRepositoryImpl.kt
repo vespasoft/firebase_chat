@@ -1,81 +1,54 @@
-/*
-Copyright 2022 Google LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
- */
-
 package com.example.firebasechat.model.repository.impl
 
 import com.example.firebasechat.model.LoggedUser
 import com.example.firebasechat.model.repository.AccountRepository
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.firebasechat.model.resources.firestore.AccountFirestoreDatabase
 import javax.inject.Inject
 
-class AccountRepositoryImpl @Inject constructor() : AccountRepository {
+class AccountRepositoryImpl @Inject constructor(
+    private val accountFirestoreDatabase: AccountFirestoreDatabase
+) : AccountRepository {
     override fun hasUser(): Boolean {
-        return Firebase.auth.currentUser != null
+        return accountFirestoreDatabase.hasUser()
     }
 
     override fun isAnonymousUser(): Boolean {
-        return Firebase.auth.currentUser?.isAnonymous ?: true
+        return accountFirestoreDatabase.isAnonymousUser()
     }
 
     override fun getUserId(): String {
-        return Firebase.auth.currentUser?.uid.orEmpty()
+        return accountFirestoreDatabase.getUserId()
     }
 
     override fun getLoggedUser(): LoggedUser {
-        return LoggedUser(
-            uid = Firebase.auth.currentUser?.uid.orEmpty(),
-            email = Firebase.auth.currentUser?.email.orEmpty()
-        )
+        return accountFirestoreDatabase.getLoggedUser()
     }
 
     override fun authenticate(email: String, password: String, onResult: (Throwable?) -> Unit) {
-        Firebase.auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { onResult(it.exception) }
+        accountFirestoreDatabase.authenticate(email, password, onResult)
     }
 
     override fun createAccount(email: String, password: String, onResult: (Throwable?) -> Unit) {
-        Firebase.auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { onResult(it.exception) }
+        accountFirestoreDatabase.createAccount(email, password, onResult)
     }
 
     override fun sendRecoveryEmail(email: String, onResult: (Throwable?) -> Unit) {
-        Firebase.auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { onResult(it.exception) }
+        accountFirestoreDatabase.sendRecoveryEmail(email, onResult)
     }
 
     override fun createAnonymousAccount(onResult: (Throwable?) -> Unit) {
-        Firebase.auth.signInAnonymously()
-            .addOnCompleteListener { onResult(it.exception) }
+        accountFirestoreDatabase.createAnonymousAccount(onResult)
     }
 
     override fun linkAccount(email: String, password: String, onResult: (Throwable?) -> Unit) {
-        val credential = EmailAuthProvider.getCredential(email, password)
-
-        Firebase.auth.currentUser!!.linkWithCredential(credential)
-            .addOnCompleteListener { onResult(it.exception) }
+        accountFirestoreDatabase.linkAccount(email, password, onResult)
     }
 
     override fun deleteAccount(onResult: (Throwable?) -> Unit) {
-        Firebase.auth.currentUser!!.delete()
-            .addOnCompleteListener { onResult(it.exception) }
+        accountFirestoreDatabase.deleteAccount(onResult)
     }
 
     override fun signOut() {
-        Firebase.auth.signOut()
+        accountFirestoreDatabase.signOut()
     }
 }

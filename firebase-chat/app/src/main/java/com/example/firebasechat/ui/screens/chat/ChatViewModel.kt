@@ -8,7 +8,7 @@ import com.example.firebasechat.model.Message
 import com.example.firebasechat.model.PushNotification
 import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.*
-import com.example.firebasechat.model.remote.FcmRequest
+import com.example.firebasechat.model.resources.remote.FcmRequest
 import com.example.firebasechat.ui.common.ext.idFromParameter
 import com.example.firebasechat.ui.screens.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

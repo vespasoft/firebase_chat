@@ -3,38 +3,20 @@ package com.example.firebasechat.model.repository.impl
 import com.example.firebasechat.model.User
 import com.example.firebasechat.model.repository.NotificationRepository
 import com.example.firebasechat.model.repository.UserRepository
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
+import com.example.firebasechat.model.resources.firestore.UserFirestoreDatabase
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
+    private val userFirestoreDatabase: UserFirestoreDatabase,
     private val notificationRepository: NotificationRepository
 ): UserRepository {
-    private var listenerRegistration: ListenerRegistration? = null
-    private var loggedUserListenerRegistration: ListenerRegistration? = null
 
     override fun addListener(
         userId: String,
         onUserEvent: (Boolean, User) -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        val query = Firebase.firestore.collection(USER_COLLECTION).whereNotEqualTo(USER_ID, userId)
-
-        listenerRegistration = query.addSnapshotListener { value, error ->
-            if (error != null) {
-                onError(error)
-                return@addSnapshotListener
-            }
-
-            value?.documentChanges?.forEach {
-                val wasUserDeleted = it.type == DocumentChange.Type.REMOVED
-                val document = it.document.toObject<User>().copy(id = it.document.id)
-                onUserEvent(wasUserDeleted, document)
-            }
-        }
+        userFirestoreDatabase.addListener(userId, onUserEvent, onError)
     }
 
     override fun addLoggedUserListener(
@@ -42,66 +24,32 @@ class UserRepositoryImpl @Inject constructor(
         onLoggedUserEvent: (User) -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        val query = Firebase.firestore.collection(USER_COLLECTION).whereEqualTo(USER_ID, userId)
-
-        loggedUserListenerRegistration = query.addSnapshotListener { value, error ->
-            if (error != null) {
-                onError(error)
-                return@addSnapshotListener
-            }
-
-            value?.documentChanges?.forEach {
-                val document = it.document.toObject<User>().copy(id = it.document.id)
-                onLoggedUserEvent(document)
-            }
-        }
+        userFirestoreDatabase.addLoggedUserListener(userId, onLoggedUserEvent, onError)
     }
 
     override fun removeListener() {
-        listenerRegistration?.remove()
-        loggedUserListenerRegistration?.remove()
+        userFirestoreDatabase.removeListener()
     }
 
     override fun saveUser(
         user: User,
         onResult: (Throwable?) -> Unit
     ) {
-        notificationRepository.fetchingFCMRegistrationToken { fcmToken ->
-            val updatedUser = user.copy(fcmToken = fcmToken)
-            Firebase.firestore
-                .collection(USER_COLLECTION)
-                .add(updatedUser)
-                .addOnSuccessListener { result ->
-                    val modifiedUser = updatedUser.copy(id = result.id)
-                    updateUser(modifiedUser, onResult)
-                }
-        }
+        userFirestoreDatabase.saveUser(user, onResult)
     }
 
     override fun updateUser(
         user: User,
         onResult: (Throwable?) -> Unit
     ) {
-        Firebase.firestore
-            .collection(USER_COLLECTION)
-            .document(user.id)
-            .set(user)
-            .addOnCompleteListener { onResult(it.exception) }
+        userFirestoreDatabase.updateUser(user, onResult)
     }
 
     override fun deleteUser(
         userId: String,
         onResult: (Throwable?) -> Unit
     ) {
-        Firebase.firestore
-            .collection(USER_COLLECTION)
-            .whereEqualTo(USER_ID, userId)
-            .get()
-            .addOnFailureListener { error -> onResult(error) }
-            .addOnSuccessListener { result ->
-                for (document in result) document.reference.delete()
-                onResult(null)
-            }
+        userFirestoreDatabase.deleteUser(userId, onResult)
     }
 
     override fun getUser(
@@ -109,15 +57,7 @@ class UserRepositoryImpl @Inject constructor(
         onError: (Throwable) -> Unit,
         onSuccess: (User) -> Unit
     ) {
-        Firebase.firestore
-            .collection(USER_COLLECTION)
-            .document(userId)
-            .get()
-            .addOnFailureListener { error -> onError(error) }
-            .addOnSuccessListener { result ->
-                val user = result.toObject<User>()?.copy(id = result.id)
-                onSuccess(user ?: User())
-            }
+        userFirestoreDatabase.getUser(userId, onError, onSuccess)
     }
 
     override fun registerFCMToken(
