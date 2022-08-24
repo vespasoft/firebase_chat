@@ -16,6 +16,7 @@
 
 package com.example.firebasechat.ui.screens.chat
 
+import android.R.drawable
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.*
@@ -55,6 +56,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.firebasechat.R
+import com.example.firebasechat.resources
+import com.example.firebasechat.ui.common.ext.getResId
+
 
 enum class InputSelector {
     NONE,
@@ -77,7 +81,7 @@ fun UserInputPreview() {
 @Composable
 fun UserInput(
     onMessageSent: (String) -> Unit,
-    onStickerSent: (Int) -> Unit,
+    onStickerSent: (String) -> Unit,
     modifier: Modifier = Modifier,
     resetScroll: () -> Unit = {},
 ) {
@@ -148,7 +152,7 @@ private fun TextFieldValue.addText(newString: String): TextFieldValue {
 private fun SelectorExpanded(
     currentSelector: InputSelector,
     onTextAdded: (String) -> Unit,
-    onStickerAdded: (Int) -> Unit
+    onStickerAdded: (String) -> Unit
 ) {
     if (currentSelector == InputSelector.NONE) return
 
@@ -277,7 +281,9 @@ private fun InputSelectorButton(
     }
     IconButton(
         onClick = onClick,
-        modifier = Modifier.size(56.dp).then(backgroundModifier)
+        modifier = Modifier
+            .size(56.dp)
+            .then(backgroundModifier)
     ) {
         val tint = if (selected) {
             MaterialTheme.colorScheme.onSecondary
@@ -366,7 +372,7 @@ private fun UserInputText(
 @Composable
 fun EmojiSelector(
     onTextAdded: (String) -> Unit,
-    onStickerAdded: (Int) -> Unit,
+    onStickerAdded: (String) -> Unit,
     focusRequester: FocusRequester
 ) {
     var selected by remember { mutableStateOf(EmojiStickerSelector.EMOJI) }
@@ -473,7 +479,7 @@ fun EmojiTable(
 
 @Composable
 fun StickerTable(
-    onStickerAdded: (Int) -> Unit,
+    onStickerAdded: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier.fillMaxWidth()) {
@@ -486,12 +492,14 @@ fun StickerTable(
                 repeat(STICKERS_COLUMNS) { y ->
                     val sticker = stickers[x * STICKERS_COLUMNS + y]
                     Image(
-                        painter = painterResource(sticker),
+                        painter = painterResource(sticker.getResId(resources())),
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .size(80.dp)
-                            .clickable { onStickerAdded(sticker) },
-                        contentDescription = stringResource(id = R.string.attached_image)
+                            .clickable {
+                                onStickerAdded(sticker)
+                            },
+                        contentDescription = stringResource(id = com.example.firebasechat.R.string.attached_image)
                     )
                 }
             }
@@ -637,29 +645,29 @@ private const val STICKERS_COLUMNS = 4
 private const val STICKERS_ROWS = 5
 
 private val stickers = listOf(
-    R.drawable.stick01,
-    R.drawable.stick02,
-    R.drawable.stick03,
-    R.drawable.stick04,
-    R.drawable.stick05,
-    R.drawable.stick06,
-    R.drawable.stick07,
-    R.drawable.stick08,
-    R.drawable.stick09,
-    R.drawable.stick10,
-    R.drawable.stick11,
-    R.drawable.stick12,
-    R.drawable.stick13,
-    R.drawable.stick14,
-    R.drawable.stick15,
-    R.drawable.stick16,
-    R.drawable.stick17,
-    R.drawable.stick18,
-    R.drawable.stick19,
-    R.drawable.stick20,
-    R.drawable.stick21,
-    R.drawable.stick22,
-    R.drawable.stick23,
-    R.drawable.stick24,
-    R.drawable.stick25
+    "stick01",
+    "stick02",
+    "stick03",
+    "stick04",
+    "stick05",
+    "stick06",
+    "stick07",
+    "stick08",
+    "stick09",
+    "stick10",
+    "stick11",
+    "stick12",
+    "stick13",
+    "stick14",
+    "stick15",
+    "stick16",
+    "stick17",
+    "stick18",
+    "stick19",
+    "stick20",
+    "stick21",
+    "stick22",
+    "stick23",
+    "stick24",
+    "stick25"
 )

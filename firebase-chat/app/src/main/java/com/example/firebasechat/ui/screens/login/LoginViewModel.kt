@@ -2,7 +2,6 @@ package com.example.firebasechat.ui.screens.login
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.example.firebasechat.CHAT_SCREEN
 import com.example.firebasechat.LOGIN_SCREEN
 import com.example.firebasechat.MAIN_SCREEN
 import com.example.firebasechat.SIGN_UP_SCREEN

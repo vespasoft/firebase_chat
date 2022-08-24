@@ -32,7 +32,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.firebasechat.R
 import com.example.firebasechat.model.Message
 import com.example.firebasechat.model.User
+import com.example.firebasechat.resources
 import com.example.firebasechat.ui.common.composable.ToolBarComponent
+import com.example.firebasechat.ui.common.ext.getResId
 import com.example.firebasechat.ui.common.ext.toTimeFormat
 import com.example.firebasechat.ui.common.snackbar.FunctionalityNotAvailablePopup
 import com.example.firebasechat.ui.theme.FirebaseChatTheme
@@ -74,9 +76,9 @@ fun ChatScreen(
                             Message(content = content)
                         )
                     },
-                    onStickerSent = { stickerId ->
+                    onStickerSent = { sticker ->
                         viewModel.sendMessage(
-                            Message(image = stickerId.toString())
+                            Message(image = sticker)
                         )
                     },
                     resetScroll = {
@@ -366,7 +368,7 @@ fun ChatItemBubble(
             ) {
                 message.image?.let {
                     Image(
-                        painter = painterResource(it.toInt()),
+                        painter = painterResource(it.getResId(resources())),
                         contentScale = ContentScale.Fit,
                         modifier = Modifier.size(160.dp),
                         contentDescription = stringResource(id = R.string.attached_image)

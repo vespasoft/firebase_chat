@@ -16,7 +16,10 @@ limitations under the License.
 
 package com.example.firebasechat.ui.common.ext
 
+import android.content.res.Resources
 import android.util.Patterns
+import com.example.firebasechat.resources
+import java.lang.reflect.Field
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -40,6 +43,15 @@ fun String.passwordMatches(repeated: String): Boolean {
 
 fun String.idFromParameter(): String {
     return this.substring(1, this.length-1)
+}
+
+fun String.getResId(r: Resources): Int {
+    return try {
+        r.getIdentifier(this, "drawable", "com.example.firebasechat")
+    } catch (e: Exception) {
+        e.printStackTrace()
+        -1
+    }
 }
 
 fun Long.toTimeFormat(): String {
