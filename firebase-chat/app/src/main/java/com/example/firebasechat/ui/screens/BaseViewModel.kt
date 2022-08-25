@@ -11,10 +11,6 @@ open class BaseViewModel(private val logRepository: LogRepository) : ViewModel()
         onError(throwable)
     }
 
-    open val logErrorExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        logRepository.logNonFatalCrash(throwable)
-    }
-
     open fun onError(error: Throwable) {
         SnackbarManager.showMessage(error.toSnackbarMessage())
         logRepository.logNonFatalCrash(error)

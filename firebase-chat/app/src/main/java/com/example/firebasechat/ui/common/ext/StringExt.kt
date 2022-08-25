@@ -17,9 +17,7 @@ limitations under the License.
 package com.example.firebasechat.ui.common.ext
 
 import android.content.res.Resources
-import android.util.Patterns
-import com.example.firebasechat.resources
-import java.lang.reflect.Field
+import androidx.core.util.PatternsCompat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -28,7 +26,7 @@ private const val MIN_PASS_LENGTH = 6
 private const val PASS_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$"
 
 fun String.isValidEmail(): Boolean {
-    return this.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    return this.isNotBlank() && PatternsCompat.EMAIL_ADDRESS.matcher(this).matches()
 }
 
 fun String.isValidPassword(): Boolean {

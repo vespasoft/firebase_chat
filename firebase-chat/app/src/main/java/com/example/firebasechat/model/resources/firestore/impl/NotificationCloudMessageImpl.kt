@@ -8,10 +8,11 @@ import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
 
 class NotificationCloudMessageImpl @Inject constructor(
-    private val sendNotificationRemote: SendNotificationRemote
+    private val sendNotificationRemote: SendNotificationRemote,
+    private val firebaseMessaging: FirebaseMessaging
 ): NotificationCloudMessage {
     override fun fetchingFCMRegistrationToken(onRegistrationToken: (String) -> Unit) {
-        FirebaseMessaging.getInstance().token
+        firebaseMessaging.token
             .addOnCompleteListener(
                 OnCompleteListener { task ->
                     if (!task.isSuccessful) {

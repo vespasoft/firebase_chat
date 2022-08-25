@@ -7,7 +7,6 @@ import com.example.firebasechat.MAIN_SCREEN
 import com.example.firebasechat.SIGN_UP_SCREEN
 import com.example.firebasechat.model.repository.AccountRepository
 import com.example.firebasechat.model.repository.LogRepository
-import com.example.firebasechat.model.repository.UserRepository
 import com.example.firebasechat.ui.common.ext.isValidEmail
 import com.example.firebasechat.ui.common.snackbar.SnackbarManager
 import com.example.firebasechat.ui.screens.BaseViewModel
@@ -19,7 +18,6 @@ import com.example.firebasechat.R.string as AppText
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val userRepository: UserRepository,
     private val logRepository: LogRepository
 ) : BaseViewModel(logRepository) {
     var uiState = mutableStateOf(LoginUiState())
@@ -52,7 +50,6 @@ class LoginViewModel @Inject constructor(
                 if (error == null) {
                     linkWithEmail()
                     openAndPopUp(MAIN_SCREEN, LOGIN_SCREEN)
-
                 } else onError(error)
             }
         }

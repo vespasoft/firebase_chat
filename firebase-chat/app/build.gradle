@@ -47,7 +47,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.7.0'
     }
     packagingOptions {
         resources {
@@ -92,6 +91,7 @@ dependencies {
 
     // Test
     implementation 'io.mockk:mockk:1.12.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"

@@ -5,7 +5,6 @@ import io.ktor.client.*
 import io.ktor.client.statement.*
 
 interface SendNotificationRemote {
-    val client: HttpClient
-    val serverUrl: String
+    val firebaseAPIUrl: String
     suspend fun invoke(param: PushNotification): HttpResponse
 }
