@@ -17,8 +17,8 @@ Also I tried to follow the SOLID principles to make the project easier to unders
 🧬 Screenshots
 ------------
 
-| Login | Dashboard | ChatRoom |
-|:-----|---------|
+| Login |
+|Dashboard|ChatRoom|
 |<br><br><img src="readme/screenshot_login.png" width="320" alt="Jetnews sample demo"><br><br> | <img src="readme/screenshot_contacts.png" width="320" alt="Jetnews sample demo"> | <br><br><img src="readme/screenshot_chat.png" width="320" alt="Jetnews sample demo"><br><br> |
 
 --- 
